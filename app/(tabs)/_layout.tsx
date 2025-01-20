@@ -1,8 +1,11 @@
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "@/constants/Colors";
+import { IconButton } from "@/components/ui";
 
 export default function TabsLayout() {
+  const router = useRouter();
+
   return (
     <Tabs
       screenOptions={{
@@ -18,6 +21,16 @@ export default function TabsLayout() {
         tabBarLabelStyle: {
           fontWeight: "bold",
         },
+        headerRight: ({ tintColor }) => (
+          <IconButton
+            icon="add"
+            size={24}
+            color={tintColor || "white"}
+            onPress={() => {
+              router.push("/manage-expense");
+            }}
+          />
+        ),
       }}
     >
       <Tabs.Screen
