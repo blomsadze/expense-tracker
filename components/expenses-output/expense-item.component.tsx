@@ -1,8 +1,10 @@
 import React, { FC } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { IExpense } from "./expenses-output.component";
-import { GlobalStyles } from "@/constants/Colors";
 import { useRouter } from "expo-router";
+import dayjs from "dayjs";
+
+import { GlobalStyles } from "@/constants/Colors";
+import { IExpense } from "@/context/expenses.context";
 
 type TExpenseItemProps = {
   expense: IExpense;
@@ -24,7 +26,7 @@ const ExpenseItem: FC<TExpenseItemProps> = ({ expense }) => {
         <View>
           <Text style={styles.textBase}>{expense.description}</Text>
           <Text style={styles.textBase}>
-            {expense.date.toLocaleDateString()}
+            {dayjs(expense.date).format("YYYY-MM-DD")}
           </Text>
         </View>
         <View style={styles.amountContainer}>

@@ -1,94 +1,34 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { ExpensesSummary, ExpensesList } from ".";
 import { GlobalStyles } from "@/constants/Colors";
+import { IExpense } from "@/context/expenses.context";
 
 type TExpensesOutputProps = {
-  expenses?: any[];
+  expenses?: IExpense[];
   expensesPeriod?: string;
+  fallbackText: string;
 };
 
-export interface IExpense {
-  id: string;
-  description: string;
-  amount: number;
-  date: Date;
-}
-
-const DUMMY_EXPENSES: IExpense[] = [
-  {
-    id: "e1",
-    description: "A pair of shoes",
-    amount: 59.99,
-    date: new Date("2021-12-19"),
-  },
-  {
-    id: "e2",
-    description: "A pair of trousers",
-    amount: 89.29,
-    date: new Date("2022-01-05"),
-  },
-  {
-    id: "e3",
-    description: "Some bananas",
-    amount: 5.99,
-    date: new Date("2021-12-01"),
-  },
-  {
-    id: "e4",
-    description: "A pair of shoes",
-    amount: 59.99,
-    date: new Date("2021-12-19"),
-  },
-  {
-    id: "e5",
-    description: "A pair of shoes",
-    amount: 59.99,
-    date: new Date("2021-12-19"),
-  },
-  {
-    id: "e6",
-    description: "A pair of shoes",
-    amount: 59.99,
-    date: new Date("2021-12-19"),
-  },
-  {
-    id: "e7",
-    description: "A pair of shoes",
-    amount: 59.99,
-    date: new Date("2021-12-19"),
-  },
-  {
-    id: "e8",
-    description: "A pair of shoes",
-    amount: 59.99,
-    date: new Date("2021-12-19"),
-  },
-  {
-    id: "e9",
-    description: "A pair of shoes",
-    amount: 59.99,
-    date: new Date("2021-12-19"),
-  },
-  {
-    id: "e10",
-    description: "A pair of shoes",
-    amount: 59.99,
-    date: new Date("2021-12-19"),
-  },
-];
-
 const ExpensesOutput: FC<TExpensesOutputProps> = ({
-  expenses = DUMMY_EXPENSES,
+  expenses = [],
   expensesPeriod = "Last 7 days",
+  fallbackText,
 }) => {
+  let content = <Text style={styles.infoText}>{fallbackText}</Text>;
+
+  if (expenses.length > 0) {
+    content = <ExpensesList expenses={expenses} />;
+  }
+
   return (
     <View style={styles.container}>
       <ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
-      <ExpensesList expenses={expenses} />
+      {content}
     </View>
   );
 };
+
 export { ExpensesOutput };
 
 const styles = StyleSheet.create({
@@ -98,5 +38,11 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     paddingBottom: 0,
     backgroundColor: GlobalStyles.colors.primary700,
+  },
+  infoText: {
+    color: "white",
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 32,
   },
 });

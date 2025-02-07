@@ -1,7 +1,8 @@
 import React, { FC } from "react";
 import { FlatList } from "react-native";
 
-import { ExpenseItem, IExpense } from ".";
+import { ExpenseItem } from ".";
+import { IExpense } from "@/context/expenses.context";
 
 type TExpensesListProps = {
   expenses?: IExpense[];

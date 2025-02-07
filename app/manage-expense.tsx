@@ -1,8 +1,10 @@
-import React, { useLayoutEffect } from "react";
+import React, { useContext, useLayoutEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+
 import { Button, IconButton } from "@/components/ui";
 import { GlobalStyles } from "@/constants/Colors";
+import { ExpensesContext } from "@/context/expenses.context";
 
 const ManageExpense = () => {
   const navigation = useNavigation();
@@ -10,16 +12,33 @@ const ManageExpense = () => {
   const { expenseId } = useLocalSearchParams();
   const isEditing = !!expenseId;
 
+  const { addExpense, updateExpense, deleteExpense } =
+    useContext(ExpensesContext);
+
   const deleteExpenseHandler = () => {
-    console.log("delete expense");
+    deleteExpense(expenseId as string);
+    router.back();
   };
 
   const cancelExpenseHandler = () => {
     router.back();
   };
 
-  const saveExpenseHandler = () => {
-    console.log("save expense");
+  const confirmHandler = () => {
+    if (isEditing) {
+      updateExpense(expenseId as string, {
+        description: "New Expense!!!",
+        amount: 29.99,
+        date: new Date(),
+      });
+    } else {
+      addExpense({
+        description: "New Expense",
+        amount: 123,
+        date: new Date(),
+      });
+    }
+    router.back();
   };
 
   // set title
@@ -39,7 +58,7 @@ const ManageExpense = () => {
         >
           Cancel
         </Button>
-        <Button style={styles.button} onPress={saveExpenseHandler}>
+        <Button style={styles.button} onPress={confirmHandler}>
           {isEditing ? "Update" : "Add"}
         </Button>
       </View>
